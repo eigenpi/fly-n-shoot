@@ -29,8 +29,8 @@ end missile;
 
 architecture UML_ARCHITECTURE of missile is
 
-	type STATE_TYPE_MISSILE is (Armed, Flying, Exploding);
-	signal state_reg, state_next: STATE_TYPE_MISSILE;
+  type STATE_TYPE_MISSILE is (Armed, Flying, Exploding);
+  signal state_reg, state_next: STATE_TYPE_MISSILE;
   -- coordinates of missile
   signal x_reg, x_next: unsigned(9 downto 0);
   signal y_reg, y_next: unsigned(9 downto 0); 
@@ -43,29 +43,29 @@ architecture UML_ARCHITECTURE of missile is
   constant GAME_MISSILE_SPEED_X: integer:=4;
   constant GAME_SPEED_X: integer:=1;
   
-	begin
+  begin
   
-		-- state register; process #1
-		process (TIME_TICK, reset)
-		begin
-			if (reset = '1') then 
-				state_reg <= Armed;
+    -- state register; process #1
+    process (TIME_TICK, reset)
+    begin
+      if (reset = '1') then 
+        state_reg <= Armed;
         x_reg <= (OTHERS=>'0');
         y_reg <= (OTHERS=>'0');
         exp_ctr_reg <= (OTHERS=>'0');
-			elsif (TIME_TICK' event and TIME_TICK = '1') then 
-				state_reg <= state_next;
+      elsif (TIME_TICK' event and TIME_TICK = '1') then 
+        state_reg <= state_next;
         x_reg <= x_next;
         y_reg <= y_next;
         exp_ctr_reg <= exp_ctr_next;
-			end if;
-	  end process;
+      end if;
+    end process;
     
-		-- next state and output logic; process #2
-		process (state_reg, exp_ctr_reg, MISSILE_FIRE, HIT_MINE, HIT_WALL, x_reg, y_reg)
-		begin
-			state_next <= state_reg;
-			x_next <= x_reg;
+    -- next state and output logic; process #2
+    process (state_reg, exp_ctr_reg, MISSILE_FIRE, HIT_MINE, HIT_WALL, x_reg, y_reg)
+    begin
+      state_next <= state_reg;
+      x_next <= x_reg;
       y_next <= y_reg;
       exp_ctr_next <= exp_ctr_reg; 
       MISSILE_IMG <= '0';
@@ -76,14 +76,14 @@ architecture UML_ARCHITECTURE of missile is
       missile_flying<='0';      
       timer_2sec_start <='0';
       
-			case state_reg is 
-				when Armed =>
-					if MISSILE_FIRE = '1' then
-						state_next <= Flying;
-						x_next <= unsigned(x0);
+      case state_reg is 
+        when Armed =>
+          if MISSILE_FIRE = '1' then
+            state_next <= Flying;
+            x_next <= unsigned(x0);
             y_next <= unsigned(y0);
-					end if;
-				when Flying =>
+          end if;
+        when Flying =>
           missile_flying<='1'; 
           x_next <= x_reg + GAME_MISSILE_SPEED_X; -- advance missile
           -- post event MISSILE_IMG to the Tunnel; this amounts to just asserting MISSILE_IMG;
@@ -91,7 +91,7 @@ architecture UML_ARCHITECTURE of missile is
           MISSILE_IMG <= '1';
           if (x_reg >= MAX_X) then           
             state_next <= Armed;
-					end if;
+          end if;
           if (DESTROYED_EITHER_MINE = '1') then -- in this case, missile does not explode, just vanishes; mines explode on screen
             state_next <= Armed;
             DESTROYED_MINE <= '1'; -- post event to Ship
@@ -111,8 +111,8 @@ architecture UML_ARCHITECTURE of missile is
           if timer_2sec_up='1' then
             state_next <= Armed; 
           end if;
-			end case;
-		end process;
+      end case;
+    end process;
 
   -- coordinates passed with events 
   x <= std_logic_vector(x_reg);
@@ -126,4 +126,4 @@ architecture UML_ARCHITECTURE of missile is
             timer_start=>timer_2sec_start,
             timer_up=>timer_2sec_up);
              
-end UML_ARCHITECTURE;	
+end UML_ARCHITECTURE;  

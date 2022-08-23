@@ -32,9 +32,9 @@ end mine2;
 architecture UML_ARCHITECTURE of mine2 is
 
   type SUPERSTATE_TYPE_MINE2 is (USED, UNUSED);
-	type STATE_TYPE_MINE2 is (Planted, Exploding);
+  type STATE_TYPE_MINE2 is (Planted, Exploding);
   signal superstate_reg, superstate_next: SUPERSTATE_TYPE_MINE2;
-	signal state_reg, state_next: STATE_TYPE_MINE2;
+  signal state_reg, state_next: STATE_TYPE_MINE2;
   -- coordinates where mine is planted;
   signal x_reg, x_next: unsigned(9 downto 0);
   signal y_reg, y_next: unsigned(9 downto 0);
@@ -49,14 +49,14 @@ architecture UML_ARCHITECTURE of mine2 is
   signal timer_2sec_start, timer_2sec_up: std_logic;
   
   
-	begin
+  begin
     
-		-- state register; process #1
-		process (TIME_TICK, reset)
-		begin
-			if (reset = '1') then 
+    -- state register; process #1
+    process (TIME_TICK, reset)
+    begin
+      if (reset = '1') then 
         superstate_reg <= UNUSED;
-				state_reg <= Planted;
+        state_reg <= Planted;
         --x_reg <= to_unsigned(MAX_X,10); -- place mine20 in the middle of screen on x axis;
         --y_reg <= to_unsigned((MAX_Y-MINE2_HEIGHT)/2,10); -- place mine20 in the middle of screen on y axis;
         x_reg <= unsigned(x0);
@@ -64,26 +64,26 @@ architecture UML_ARCHITECTURE of mine2 is
         local_ctr_reg <= (OTHERS=>'0');
         exp_ctr_reg <= (OTHERS=>'0');
         missile_hits_ctr_reg <= "00";
-			elsif (TIME_TICK' event and TIME_TICK = '1') then 
+      elsif (TIME_TICK' event and TIME_TICK = '1') then 
         superstate_reg <= superstate_next;
-				state_reg <= state_next;
+        state_reg <= state_next;
         x_reg <= x_next;
         y_reg <= y_next;
         exp_ctr_reg <= exp_ctr_next;
         local_ctr_reg <= local_ctr_next;
         missile_hits_ctr_reg <= missile_hits_ctr_next;
-			end if;
-	  end process;    
+      end if;
+    end process;    
     
     
-		-- next state and output logic; process #2
-		process (superstate_reg, state_reg, MINE2_PLANT, MINE2_RECYCLE, 
+    -- next state and output logic; process #2
+    process (superstate_reg, state_reg, MINE2_PLANT, MINE2_RECYCLE, 
       mine2_bmp_overlaps_ship_bmp, mine2_bmp_overlaps_missile_bmp, 
       exit_action)
-		begin
+    begin
       -- default initializations
       superstate_next <= superstate_reg;
-			state_next <= state_reg;
+      state_next <= state_reg;
       x_next <= x_reg;
       y_next <= y_reg;
       exp_ctr_next <= exp_ctr_reg;
@@ -97,9 +97,9 @@ architecture UML_ARCHITECTURE of mine2 is
       MINE2_DISABLED <= '0';
       timer_2sec_start <='0';      
   
-			case superstate_reg is 
+      case superstate_reg is 
         --=====================================================================
-				when UNUSED => -- superstate
+        when UNUSED => -- superstate
           if MINE2_PLANT = '1' then
             superstate_next <= USED;
             state_next <= Planted;
@@ -108,7 +108,7 @@ architecture UML_ARCHITECTURE of mine2 is
             missile_hits_ctr_next <= "00"; --reset hits counter, in case it was incremented once only and then got out of screen
           end if;  
         --=====================================================================
-				when USED => -- superstate; 
+        when USED => -- superstate; 
           if exit_action = '1' then 
             MINE2_DISABLED <= '1'; -- tell the Tunnel object
             superstate_next <= UNUSED;
@@ -152,8 +152,8 @@ architecture UML_ARCHITECTURE of mine2 is
             --~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
           end case;     
         --=====================================================================  
-			end case;
-		end process;
+      end case;
+    end process;
  
   -- coordinates passed with events 
   x <= std_logic_vector(x_reg);
@@ -169,4 +169,4 @@ architecture UML_ARCHITECTURE of mine2 is
             timer_start=>timer_2sec_start,
             timer_up=>timer_2sec_up);
             
-end UML_ARCHITECTURE;	
+end UML_ARCHITECTURE;  
