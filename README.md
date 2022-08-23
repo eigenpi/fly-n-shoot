@@ -26,13 +26,16 @@ the DE1-SoC board. The game can be played using either these buttons or the NEC 
 3) Resources
 
 YouTube video with demonstration: 
-  --https://www.youtube.com/watch?v=EWZZK2uyEOw
+  https://www.youtube.com/watch?v=EWZZK2uyEOw
+  
 Paper that describes translation from UML statecharts into VHDL code: 
-  --http://dejazzer.com/publications.html 
+  http://dejazzer.com/publications.html 
 
 4) Credits
 
 The following two excellent books:
 
-  --[1] Miro Samek, “Practical UML Statecharts in C/C++,” Second Edition, Elsevier, 2009.
-  --[2] Pong P. Chu, “FPGA Prototyping by VHDL Examples,” Wiley, 2008.
+  [1] Miro Samek, “Practical UML Statecharts in C/C++,” Second Edition, Elsevier, 2009.
+  
+  [2] Pong P. Chu, “FPGA Prototyping by VHDL Examples,” Wiley, 2008.
+  
