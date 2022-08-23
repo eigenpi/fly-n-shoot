@@ -58,7 +58,7 @@ architecture arch of tunnel_and_graph is
   signal mine20_x_rand_reg, mine20_y_rand_reg: unsigned(9 downto 0); -- random numbers that qualify for planting mine20
   signal mine20_x_rand_next, mine20_y_rand_next: unsigned(9 downto 0);
   
-	type STATE_TYPE_PLANTING_MINES is (PLANT_PAUSE, PLANT_MINE1, PLANT_MINE2);
+  type STATE_TYPE_PLANTING_MINES is (PLANT_PAUSE, PLANT_MINE1, PLANT_MINE2);
   signal plant_mine_state_reg, plant_mine_state_next: STATE_TYPE_PLANTING_MINES;
   
   
